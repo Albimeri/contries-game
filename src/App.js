@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import Countries from "./Countries.jsx";
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Countries
+        data={{
+          Germany: "Berlin",
+          Kosovo: "Prishtina",
+          Albania: "Tirana",
+          Spain: "Madrid",
+          Denmark: "Copenhagen",
+          Netherlands: "Amsterdam",
+          Sweeden: "Stockholm",
+          Austria: "Vienna",
+          France: "Paris",
+          Italy: "Rome",
+          Hungary: "Budapest",
+          Irland: "Dublin",
+          Bucharest: "Romania",
+          Belgium: "Brussels",
+          Slovakia: "Bratislava",
+          Switzerland: "Bern",
+          Greece: "Athens",
+          Finland: "Helsinki",
+        }}
+      />
+    </>
   );
-}
+};
 
 export default App;
