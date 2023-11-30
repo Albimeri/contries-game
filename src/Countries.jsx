@@ -36,6 +36,7 @@ const Contries = ({ data }) => {
 
   const handleClick = (item) => {
     if (selectedItem === item) {
+      setSelectedItem(null);
       return;
     }
     if (selectedItem) {
@@ -69,12 +70,16 @@ const Contries = ({ data }) => {
           {item}
         </button>
       ))}
-      {errorCount.length > 0 && (
+      {errorCount > 0 && (
         <p style={{ margin: "10px" }}>
           <span className="error">Error count: {errorCount}</span>
         </p>
       )}
-      {isFinished && <div>Congratiulations</div>}
+      {isFinished && (
+        <div style={{ margin: "10px" }}>
+          Congratiulations! You've got it all right.
+        </div>
+      )}
     </>
   );
 };
