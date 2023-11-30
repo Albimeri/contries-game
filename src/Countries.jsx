@@ -76,7 +76,7 @@ const Contries = ({ data }) => {
       )}
       {isGameOn && (
         <div>
-          {!isFinished && <p>Timer: {timer}</p>}
+          {!isFinished && <p style={{ margin: "10px" }}>Timer: {timer}</p>}
           {countries.map((item) => (
             <button
               type="button"
