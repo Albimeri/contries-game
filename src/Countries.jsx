@@ -1,38 +1,40 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Contries = ({ data }) => {
+  const interval = useRef();
+  const [timer, setTimer] = useState(0);
+  const [isGameOn, setIsGameOn] = useState(false);
+
   const shuffle = (array) => {
     let currentIndex = array.length,
       randomIndex;
-
-    // While there remain elements to shuffle.
     while (currentIndex > 0) {
-      // Pick a remaining element.
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
-
-      // And swap it with the current element.
       [array[currentIndex], array[randomIndex]] = [
         array[randomIndex],
         array[currentIndex],
       ];
     }
-
     return array;
   };
 
   const [errorCount, setErrorCount] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [contries, setContries] = useState(
+  const [countries, setCountries] = useState(
     shuffle(Object.entries(data).flat())
   );
 
   useEffect(() => {
-    if (contries.length === 0) {
+    clearInterval(interval.current);
+  }, [isFinished]);
+
+  useEffect(() => {
+    if (countries.length === 0) {
       setIsFinished(true);
     }
-  }, [contries]);
+  }, [countries]);
 
   const handleClick = (item) => {
     if (selectedItem === item) {
@@ -46,7 +48,7 @@ const Contries = ({ data }) => {
         pair = pair.filter((x) => x !== selectedItem && x !== item);
         if (pair.length === 0) {
           isWrong = false;
-          setContries((prevState) =>
+          setCountries((prevState) =>
             prevState.filter((item) => ![key, value].includes(item))
           );
         }
@@ -58,26 +60,45 @@ const Contries = ({ data }) => {
     }
   };
 
+  const startGame = () => {
+    setIsGameOn(true);
+    interval.current = setInterval(() => {
+      setTimer((prevState) => prevState + 1);
+    }, 1000);
+  };
+
   return (
     <>
-      {contries.map((item) => (
-        <button
-          type="button"
-          style={{ backgroundColor: selectedItem === item ? "lightgrey" : "" }}
-          key={item}
-          onClick={() => handleClick(item)}
-        >
-          {item}
-        </button>
-      ))}
-      {errorCount > 0 && (
-        <p style={{ margin: "10px" }}>
-          <span className="error">Error count: {errorCount}</span>
-        </p>
+      {!isGameOn && (
+        <div>
+          <button onClick={startGame}>Start the game</button>
+        </div>
       )}
-      {isFinished && (
-        <div style={{ margin: "10px" }}>
-          Congratiulations! You've got it all right.
+      {isGameOn && (
+        <div>
+          {!isFinished && <p>Timer: {timer}</p>}
+          {countries.map((item) => (
+            <button
+              type="button"
+              style={{
+                backgroundColor: selectedItem === item ? "lightgrey" : "",
+              }}
+              key={item}
+              onClick={() => handleClick(item)}
+            >
+              {item}
+            </button>
+          ))}
+          {errorCount > 0 && (
+            <p style={{ margin: "10px" }}>
+              <span className="error">Error count: {errorCount}</span>
+            </p>
+          )}
+          {isFinished && (
+            <div style={{ margin: "10px" }}>
+              Congratiulations! It took you {timer} seconds to finish.
+            </div>
+          )}
         </div>
       )}
     </>
